@@ -2,13 +2,16 @@ package com.example.crc_bluetooth_record;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -77,27 +82,7 @@ public class BlueTooth extends AppCompatActivity {
         lastText = (TextView)findViewById(R.id.lastText);   // 텍스트뷰 생성
         lastText.setTextColor(Color.rgb(16,24,32)); // 텍스트뷰 폰트 색
 
-
-
-
-
-        text_list.add("TEST1");
-        text_list.add("dddddddddddddddddddddddddddddddddddddddddd\ndddddddddddddddddddddddd");
-        text_list.add("TEST3");
-        text_list.add("TEST1");
-        text_list.add("TEST2");
-        text_list.add("TEST3");
-        text_list.add("TEST1");
-        text_list.add("TEST2");
-        text_list.add("TEST3");
-        text_list.add("TEST1");
-        text_list.add("TEST2");
-        text_list.add("ddddddddddddddddddddddddddddddddddddddd\nddd");
-
-        //리스트뷰의 아이템을 클릭시 해당 아이템의 문자열을 가져오기 위한 처리
-        String last_item = (String)adapter.getItem(text_list.size()-1);
-        //텍스트뷰에 출력
-        lastText.setText(last_item);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
     }
 
     public void onBackButtonClicked(View v){
@@ -201,7 +186,6 @@ public class BlueTooth extends AppCompatActivity {
         workerThread.start();
     }
 
-
     public void connect(View view) {
         UUID uuid = java.util.UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
 
@@ -227,5 +211,25 @@ public class BlueTooth extends AppCompatActivity {
     public void clear_list(View view) {
         text_list.clear();
         adapter.notifyDataSetChanged();
+    }
+
+    public void save(View view) {
+        String fileTitle = "test.txt";
+        String filepath = Environment.getExternalStorageDirectory().toString() + "/CRC";
+        File file = new File(filepath, fileTitle);
+
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter writer = new FileWriter(file, false);
+            for(int i=0;i<text_list.size();i++){
+                writer.write(text_list.get(i));
+            }
+            writer.close();
+            Toast.makeText(getApplicationContext(),"저장 완료",Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(),"실패",Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -18,9 +18,20 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <ImageButton
+                android:onClick="save"
+                android:id="@+id/btn_save"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/diskette" />
+
             <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <ImageButton
@@ -55,7 +66,9 @@
                 android:id="@+id/scan"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:srcCompat="@drawable/list" />
+                app:srcCompat="@drawable/list"
+                android:contentDescription="TODO" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -90,5 +103,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
